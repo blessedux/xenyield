@@ -8,9 +8,17 @@ const nextConfig = {
       net: false,
       tls: false,
     };
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+    };
     return config;
   },
   experimental: {
+    optimizeCss: true,
+    typedRoutes: false,
+    workerThreads: true,
+    cpus: 4,
     serverActions: {
       bodySizeLimit: '10mb',
     },
@@ -26,6 +34,9 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+  },
+  postcss: {
+    ignoreWarnings: true,
   },
 };
 
