@@ -2,16 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .bg-scanlines {
+    background-image: repeating-linear-gradient(
+      transparent 0px,
+      transparent 1px,
+      theme(colors.amber.500 / 5%) 3px
+    );
+  }
+}
+
 :root {
-  --background: #000000;
-  --foreground: #ffa500;
-  --accent: #ff4500;
-  --muted: #8b4000;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
   font-family: "VT323", monospace;
 }
 

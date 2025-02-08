@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { GameProvider } from "@/context/GameContext";
+import { Providers } from '@/providers/Providers'
 
 
 export const metadata: Metadata = {
@@ -10,17 +11,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        
-      >
-        <GameProvider>
-          {children}
-        </GameProvider>
+      <body className="bg-black min-h-screen text-white antialiased">
+        <Providers>
+          <GameProvider>
+            {children}
+          </GameProvider>
+        </Providers>
       </body>
     </html>
   );

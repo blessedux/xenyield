@@ -1,0 +1,4 @@
+[
+  "function totalValueLocked() view returns (uint256)",
+  "function sessions(uint256) view returns (uint256 id, uint256 totalStaked, uint256 startTime, uint256 duration, uint8 riskLevel, bool isActive)"
+] 

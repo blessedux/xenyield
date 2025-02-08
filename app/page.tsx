@@ -10,6 +10,7 @@ import Link from 'next/link'
 import MainMenu from '@/components/MainMenu'
 import Script from 'next/script'
 import { useGame } from '@/context/GameContext'
+import SocialLinks from "@/components/SocialLinks"
 
 const WalletConnection = dynamic(() => import('@/components/WalletConnection'), {
   ssr: false
@@ -65,6 +66,9 @@ export default function HomePage() {
             </div>
           </main>
         </div>
+
+        {/* Add SocialLinks at the bottom */}
+        <SocialLinks />
       </>
     )
   }
@@ -146,6 +150,9 @@ export default function HomePage() {
           )}
         </div>
       </main>
+
+      {/* Add SocialLinks at the bottom */}
+      <SocialLinks />
     </>
   )
 }

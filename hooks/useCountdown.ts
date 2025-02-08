@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import * as React from 'react'
 
 export function useCountdown(initialTime: string) {
-  const [timeLeft, setTimeLeft] = useState(initialTime)
+  const [timeLeft, setTimeLeft] = React.useState(initialTime)
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Convert "MM:SS" to total seconds
     const [minutes, seconds] = initialTime.split(':').map(Number)
     let totalSeconds = minutes * 60 + seconds

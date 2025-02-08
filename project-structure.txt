@@ -1,0 +1,16 @@
+contracts/
+├── core/
+│   ├── XenYieldPool.sol        // Main pool contract (already started)
+│   ├── StrategyManager.sol     // Strategy management (already started)
+│   └── RewardDistributor.sol   // Handles reward distribution
+├── interfaces/
+│   ├── IYieldStrategy.sol      // Interface for yield strategies
+│   ├── IAIOracle.sol           // Interface for AI integration
+│   └── IRewardDistributor.sol  // Interface for reward distribution
+├── strategies/
+│   ├── BaseStrategy.sol        // Abstract base strategy contract
+│   ├── LendingStrategy.sol     // Lending protocol strategy
+│   └── LPStrategy.sol          // Liquidity provision strategy
+└── governance/
+    ├── XenYieldGovernor.sol    // Governance contract
+    └── XenYieldToken.sol       // Protocol token 

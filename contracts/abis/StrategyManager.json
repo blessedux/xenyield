@@ -1,0 +1,5 @@
+[
+  "function getActiveStrategies() view returns (address[])",
+  "function getTotalExpectedAPY() view returns (uint256)",
+  "function strategies(address) view returns (address protocol, uint256 allocation, uint256 expectedAPY, uint8 risk, bool active)"
+] 

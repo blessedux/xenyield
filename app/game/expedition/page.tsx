@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
 import GameBackground from '@/components/GameBackground'
 import { useCountdown } from '@/hooks/useCountdown'
+import { useXenYield } from '@/hooks/useXenYield'
+import { ArrowTopRightOnSquareIcon as ExternalLinkIcon } from '@heroicons/react/24/solid'
 
 export default function ExpeditionPage() {
   const { gameState } = useGame()
@@ -12,6 +14,7 @@ export default function ExpeditionPage() {
   const [resources] = useState(2)
   const [shield] = useState(89)
   const timeLeft = useCountdown('19:45') // This should come from game state
+  const expeditionData = useXenYield()
 
   // Check authentication and active expedition
   useEffect(() => {
@@ -66,6 +69,30 @@ export default function ExpeditionPage() {
                 backgroundRepeat: 'no-repeat',
               }}
             />
+
+            {/* Contract Info Overlay */}
+            <div className="absolute top-4 right-4 font-mono text-amber-500 text-sm">
+              <div className="backdrop-blur-sm bg-black/40 p-4 rounded-lg border border-amber-500/20">
+                <pre className="whitespace-pre">
+{`╔══════ PROTOCOL STATUS ══════╗
+║                            ║
+║  TVL      : $${expeditionData.totalValueLocked.padEnd(11)} ║
+║  YIELD    : ${expeditionData.currentYield}%${' '.repeat(11 - expeditionData.currentYield.length)} ║
+║  STRATEGIES: ${expeditionData.activeStrategies}${' '.repeat(11 - String(expeditionData.activeStrategies).length)} ║
+║                            ║
+╚════════════════════════════╝`}
+                </pre>
+                <a 
+                  href={expeditionData.blockExplorerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 flex items-center justify-center px-4 py-2 border border-amber-500/20 rounded hover:bg-amber-500/10 transition-colors"
+                >
+                  <ExternalLinkIcon className="h-4 w-4 mr-2" />
+                  View on Explorer
+                </a>
+              </div>
+            </div>
 
             {/* Overlay Content */}
             <div className="relative z-10 h-full flex items-center justify-center">
