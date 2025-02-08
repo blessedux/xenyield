@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useAccount, usePublicClient } from 'wagmi'
 import { formatEther } from 'viem'
-import { getContract } from 'viem/contract'
+import { createPublicClient, http } from 'viem'
 
 // Import ABIs (we'll need to create these from our contracts)
 import XenYieldPoolABI from '@/contracts/abis/XenYieldPool.json'
@@ -27,16 +27,14 @@ export function useXenYield() {
       if (!publicClient || !address) return
 
       try {
-        const pool = getContract({
+        const pool = publicClient.getContract({
           address: POOL_ADDRESS as `0x${string}`,
           abi: XenYieldPoolABI,
-          publicClient,
         })
 
-        const strategyManager = getContract({
+        const strategyManager = publicClient.getContract({
           address: STRATEGY_MANAGER_ADDRESS as `0x${string}`,
           abi: StrategyManagerABI,
-          publicClient,
         })
 
         const [tvl, strategies, apy] = await Promise.all([
