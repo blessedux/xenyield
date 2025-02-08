@@ -72,3 +72,18 @@ body {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide Vimeo branding */
+.vimeo-player:not(.is-playing) .vp-controls {
+  display: none !important;
+}
+
+/* Custom gradient overlay transition */
+.gradient-overlay {
+  transition: opacity 0.3s ease-out;
+}
+

@@ -120,35 +120,33 @@ export default function SimpleWalletConnect() {
   }
 
   return (
-    <div className="p-4 bg-gray-800 rounded-lg shadow-lg">
+    <div className="w-full max-w-xs">
+      <button
+        onClick={handleGameStart}
+        disabled={isConnecting}
+        className="w-full px-6 py-3 bg-amber-500 text-black rounded-lg hover:bg-amber-600 
+                   transition-colors disabled:opacity-50 font-mono text-lg"
+      >
+        {isConnecting ? 'Connecting...' : 
+         isAuthenticated ? 'Enter Game' : 'Connect Wallet'}
+      </button>
+
       {error && (
-        <div className="mb-4 p-3 bg-red-500/10 text-red-500 rounded">
+        <div className="mt-2 p-2 text-sm bg-red-500/10 text-red-500 rounded">
           {error}
         </div>
       )}
 
-      <button
-        onClick={handleGameStart}
-        disabled={isConnecting}
-        className="px-6 py-3 bg-amber-500 text-black rounded-lg hover:bg-amber-600 
-                   transition-colors disabled:opacity-50 font-mono text-lg"
-      >
-        {isConnecting ? 'Connecting...' : 
-         isAuthenticated ? 'Start Game' : 'Connect Wallet to Start'}
-      </button>
-
       {account && (
-        <div className="mt-4 text-sm">
+        <div className="mt-2 text-xs text-center">
           <div className="text-amber-500">
             {isAuthenticated ? (
               <>
-                <div className="text-green-500">✓ Wallet Connected</div>
-                <div className="text-xs mt-1">
-                  {account.slice(0, 6)}...{account.slice(-4)}
-                </div>
+                <span className="text-green-500">✓</span>{' '}
+                {account.slice(0, 6)}...{account.slice(-4)}
               </>
             ) : (
-              <div className="text-yellow-500">Authentication required</div>
+              <span className="text-yellow-500">Waiting for signature...</span>
             )}
           </div>
         </div>
