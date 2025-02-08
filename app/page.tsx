@@ -31,36 +31,40 @@ export default function HomePage() {
   if (gameState.isConnected) {
     return (
       <>
-        <div className="fixed inset-0 -z-10">
+        {/* Interactive Background */}
+        <div className="fixed inset-0" style={{ zIndex: 0 }}>
           <iframe 
             src='https://my.spline.design/purpleplanetwithmoon-5d7e1cabc13dfe14cafb614e325dbe20/'
             style={{
               width: '100%',
               height: '100%',
               border: 'none',
-              pointerEvents: 'all'
+              pointerEvents: 'all' // Enable mouse interaction
             }}
             title="XenoYield Interactive Background"
           />
         </div>
         
-        <main className="min-h-screen flex flex-col items-center justify-center p-8 relative">
-          <div className="text-center space-y-6 animate-fadeIn">
-            <h2 className="text-2xl text-amber-500 font-mono">
-              Welcome, Commander
-            </h2>
-            <p className="text-amber-400 font-mono">
-              {gameState.wallet?.slice(0, 6)}...{gameState.wallet?.slice(-4)}
-            </p>
-            <Link 
-              href="/game"
-              className="inline-block px-8 py-4 bg-amber-500 text-black rounded-lg 
-                        hover:bg-amber-600 transition-colors font-mono text-lg"
-            >
-              Enter Game
-            </Link>
-          </div>
-        </main>
+        {/* Content overlay */}
+        <div className="relative z-10">
+          <main className="min-h-screen flex flex-col items-center justify-center p-8">
+            <div className="text-center space-y-6 animate-fadeIn backdrop-blur-sm bg-black/20 p-8 rounded-lg">
+              <h2 className="text-2xl text-amber-500 font-mono">
+                Welcome, Commander
+              </h2>
+              <p className="text-amber-400 font-mono">
+                {gameState.wallet?.slice(0, 6)}...{gameState.wallet?.slice(-4)}
+              </p>
+              <Link 
+                href="/game"
+                className="inline-block px-8 py-4 bg-amber-500 text-black rounded-lg 
+                          hover:bg-amber-600 transition-colors font-mono text-lg"
+              >
+                Enter Game
+              </Link>
+            </div>
+          </main>
+        </div>
       </>
     )
   }

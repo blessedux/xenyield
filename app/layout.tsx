@@ -4,7 +4,7 @@ import { GameProvider } from "@/context/GameContext";
 
 
 export const metadata: Metadata = {
-  title: "XenoYield",
+  title: "XenYield",
   description: "A blockchain-based space exploration game",
 };
 

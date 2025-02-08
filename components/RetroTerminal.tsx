@@ -3,12 +3,15 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useGame } from "@/context/GameContext"
 
+interface Message {
+  role: 'user' | 'assistant'
+  content: string
+  isTyping?: boolean
+}
+
 interface RetroTerminalProps {
   onSend: (message: string) => void
-  messages: Array<{
-    role: 'user' | 'assistant'
-    content: string
-  }>
+  messages: Message[]
 }
 
 export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) {
@@ -16,11 +19,53 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
   const terminalRef = useRef<HTMLDivElement>(null)
   const { gameState } = useGame()
 
+  const [displayedMessages, setDisplayedMessages] = useState<Message[]>([])
+  const [isTyping, setIsTyping] = useState(false)
+  
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight
     }
   }, [messages])
+
+  useEffect(() => {
+    const typeMessage = async (message: Message, index: number) => {
+      // Check if message already exists by comparing content
+      const messageExists = displayedMessages.some(m => m.content === message.content)
+      
+      if (index < messages.length && !messageExists) {
+        setIsTyping(true)
+        const chars = message.content.split('')
+        let typed = ''
+        
+        setDisplayedMessages(prev => [
+          ...prev,
+          { ...message, content: '', isTyping: true }
+        ])
+
+        for (const char of chars) {
+          typed += char
+          setDisplayedMessages(prev => {
+            const newMessages = [...prev]
+            newMessages[newMessages.length - 1] = { ...message, content: typed, isTyping: true }
+            return newMessages
+          })
+          await new Promise(resolve => setTimeout(resolve, 15))
+        }
+        
+        setDisplayedMessages(prev => {
+          const newMessages = [...prev]
+          newMessages[newMessages.length - 1] = { ...message, isTyping: false }
+          return newMessages
+        })
+        setIsTyping(false)
+      }
+    }
+
+    if (messages.length > displayedMessages.length) {
+      typeMessage(messages[displayedMessages.length], displayedMessages.length)
+    }
+  }, [messages, displayedMessages])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,17 +93,31 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
       >
         {/* Welcome message */}
         <div className="mb-4 text-amber-400">
-          {`Welcome to XenoYield Terminal v1.0.0\n`}
-          {`Connected address: ${gameState?.wallet || 'Not connected'}\n`}
-          {`Type 'help' for available commands.\n`}
-          {`----------------------------------------\n`}
+          <pre className="whitespace-pre-wrap">
+{`
+╔══════════════════════════════════════════╗
+║         XENYIELD TERMINAL v1.0.0        ║
+╚══════════════════════════════════════════╝
+
+ESTABLISHING SECURE CONNECTION...
+CONNECTION ESTABLISHED
+
+WALLET: ${gameState?.wallet || 'NOT CONNECTED'}
+STATUS: READY FOR EXPEDITION
+
+Type 'help' to view available commands.
+----------------------------------------
+`}</pre>
         </div>
 
-        {/* Message history */}
-        {messages.map((msg, i) => (
+        {/* Message history with typewriter effect */}
+        {displayedMessages.map((msg, i) => (
           <div key={i} className={`mb-2 ${msg.role === 'assistant' ? 'text-green-500' : 'text-amber-500'}`}>
             <span className="mr-2">{msg.role === 'assistant' ? '>' : '$'}</span>
-            <span style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</span>
+            <span style={{ whiteSpace: 'pre-wrap' }}>
+              {msg.content}
+              {msg.isTyping && <span className="animate-pulse">▊</span>}
+            </span>
           </div>
         ))}
 
@@ -71,6 +130,7 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 bg-transparent border-none outline-none text-amber-500 font-mono"
             placeholder="Type your command..."
+            disabled={isTyping}
           />
         </form>
       </div>
