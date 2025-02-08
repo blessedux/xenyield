@@ -12,19 +12,19 @@ As humanity stands on the brink of becoming a multi-planetary species, the next 
 <br>*Initial Mars cargo missions laying groundwork for human arrival
 
 2030-2040:
-First human settlement on Mars
-Asteroid mining operations begin
-Deep space habitats between Earth and Mars
-Commercial lunar economy emerges
+<br>*First human settlement on Mars
+<br>*Asteroid mining operations begin
+<br>*Deep space habitats between Earth and Mars
+<br>*Commercial lunar economy emerges
 
 2040-2050:
-Regular transit between Earth and Mars
-Discovery of potentially habitable exoplanets
-Advanced propulsion enabling deeper space exploration
-First commercial operations beyond Mars
-XENOYIELD anticipates this exciting future by gamifying space exploration through blockchain technology. As humanity reaches for the stars, our protocol creates a unique bridge between DeFi yields and the thrill of cosmic discovery.
+<br>*Regular transit between Earth and Mars
+<br>*Discovery of potentially habitable exoplanets
+<br>*Advanced propulsion enabling deeper space exploration
+<br>*First commercial operations beyond Mars
+XENOYIELD anticipates this exciting future by gamifying space exploration through blockchain technology. <br>As humanity reaches for the stars, our protocol creates a unique bridge between DeFi yields and the thrill of cosmic discovery.
 
-XENOYIELD is a unique blockchain game that combines third-person combat mechanics with DeFi yield generation. Players stake assets to participate in timed expeditions on tokenized exoplanets, where survival and combat prowess directly impact financial returns.
+XEN YIELD is a unique blockchain game that combines third-person combat mechanics with DeFi yield generation. Players stake assets to participate in virtual timed expeditions on tokenized exoplanets, where survival and combat prowess directly impact financial returns. Liquidity is destined to generate benfits for participants as well as fund space exploration efforts, staying in between gamified simulation of multiplayer prospecting matches, and real space exploration.
 
 ## 🚀 Quick Start
 
