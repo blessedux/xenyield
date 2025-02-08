@@ -3,13 +3,26 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import SimpleWalletConnect from '@/components/SimpleWalletConnect'
+import GameBackground from '@/components/GameBackground'
+import { useGame } from '@/context/GameContext'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const RetroTerminal = dynamic(() => import('@/components/RetroTerminal'), {
   ssr: false
 })
 
 export default function GamePage() {
+  const { gameState } = useGame()
+  const router = useRouter()
   const [messages, setMessages] = React.useState<Array<{role: 'user' | 'assistant', content: string}>>([])
+
+  // Check authentication on page load
+  useEffect(() => {
+    if (!gameState.isConnected) {
+      router.push('/')
+    }
+  }, [gameState.isConnected, router])
 
   const handleSend = async (message: string) => {
     // Add user message
@@ -39,15 +52,26 @@ export default function GamePage() {
     }
   }
 
+  if (!gameState.isConnected) {
+    return null // or a loading state
+  }
+
   return (
-    <main className="min-h-screen p-8 bg-gray-900">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <SimpleWalletConnect />
-        <RetroTerminal 
-          messages={messages}
-          onSend={handleSend}
-        />
-      </div>
-    </main>
+    <>
+      <GameBackground />
+      <main className="min-h-screen flex flex-col items-center justify-center p-8">
+        <div className="max-w-4xl w-full mx-auto space-y-8">
+          <div className="flex justify-end">
+            <SimpleWalletConnect />
+          </div>
+          <div className="backdrop-blur-sm bg-black/60 rounded-lg overflow-hidden">
+            <RetroTerminal 
+              messages={messages}
+              onSend={handleSend}
+            />
+          </div>
+        </div>
+      </main>
+    </>
   )
 } 

@@ -31,7 +31,7 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
   }
 
   return (
-    <div className="relative w-full h-[600px] rounded-lg overflow-hidden bg-black/90 border border-amber-500/20">
+    <div className="relative w-full h-[600px] rounded-lg overflow-hidden bg-black/40 border border-amber-500/20">
       {/* CRT screen effect overlay */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent to-amber-500/5" />
       
@@ -41,7 +41,7 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
       {/* Terminal content */}
       <div 
         ref={terminalRef}
-        className="h-full overflow-auto p-4 font-mono text-amber-500 text-sm"
+        className="h-full overflow-auto p-4 font-mono text-amber-500 text-sm backdrop-blur-sm"
         style={{
           textShadow: '0 0 5px rgba(240, 173, 78, 0.5)',
         }}

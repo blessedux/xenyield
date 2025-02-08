@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 interface GameState {
   isConnected: boolean
@@ -16,12 +16,37 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
 
-export function GameProvider({ children }: { children: ReactNode }) {
+export function GameProvider({ children }: { children: React.ReactNode }) {
   const [gameState, setGameState] = useState<GameState>({
     isConnected: false,
     wallet: null,
     chainId: null
   })
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  // Check for existing connection on mount
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' })
+          if (accounts.length > 0) {
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' })
+            setGameState({
+              isConnected: true,
+              wallet: accounts[0],
+              chainId
+            })
+          }
+        } catch (error) {
+          console.error('Failed to check existing connection:', error)
+        }
+      }
+      setIsInitialized(true)
+    }
+
+    checkConnection()
+  }, [])
 
   const connectWallet = async () => {
     try {
@@ -29,12 +54,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         throw new Error("Please install MetaMask")
       }
 
-      // Request account access
       const accounts = await window.ethereum.request({ 
         method: 'eth_requestAccounts' 
       })
 
-      // Get chain ID
       const chainId = await window.ethereum.request({ 
         method: 'eth_chainId' 
       })
@@ -42,10 +65,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setGameState({
         isConnected: true,
         wallet: accounts[0],
-        chainId: chainId
+        chainId
       })
 
-      // Setup event listeners
       window.ethereum.on('accountsChanged', handleAccountsChanged)
       window.ethereum.on('chainChanged', handleChainChanged)
 
@@ -82,6 +104,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const handleChainChanged = () => {
     window.location.reload()
+  }
+
+  if (!isInitialized) {
+    return null
   }
 
   return (

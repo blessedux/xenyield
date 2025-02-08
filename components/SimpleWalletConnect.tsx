@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 import { useGame } from '@/context/GameContext'
+import { useRouter } from 'next/navigation'
 
 export default function SimpleWalletConnect() {
   const { gameState, connectWallet, disconnectWallet } = useGame()
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const handleConnect = async () => {
     try {
@@ -35,13 +37,7 @@ export default function SimpleWalletConnect() {
         throw new Error("Failed to sign authentication message")
       }
 
-      // Connect wallet through context
       await connectWallet()
-      
-      // Navigate to game page if on home page
-      if (window.location.pathname === '/') {
-        window.location.href = '/game'
-      }
 
     } catch (err) {
       console.error("Connection error:", err)
@@ -53,9 +49,8 @@ export default function SimpleWalletConnect() {
 
   const handleDisconnect = () => {
     disconnectWallet()
-    if (window.location.pathname === '/game') {
-      window.location.href = '/'
-    }
+    // Always navigate to home page on disconnect
+    router.push('/')
   }
 
   return (
