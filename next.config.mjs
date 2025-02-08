@@ -26,9 +26,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  postcss: {
-    ignoreWarnings: true,
-  },
 };
 
 export default nextConfig;

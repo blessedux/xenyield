@@ -18,7 +18,7 @@ export default function Navbar() {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <Link
-                href="https://app.gitbook.com/o/C081IIEFixW26PvJ8Lrg/s/eXWj7IqSuqgq8EzoQXi6/"
+                href="https://pewter-sight-502.notion.site/XEN-YIELD-Whitepaper-1933124defbd80af896ad39e41369e75?pvs=73/"
                 className="text-gray-300 hover:text-amber-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                  target="_blank"
               >

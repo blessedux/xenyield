@@ -17,8 +17,8 @@
 /* Additional styles */
 
 :root {
-  --foreground: 0 0% 100%;
-  --background: 0 0% 0%;
+  --foreground: 255 255 255;
+  --background: 0 0 0;
 }
 
 body {
