@@ -9,7 +9,7 @@
     background-image: repeating-linear-gradient(
       transparent 0px,
       transparent 1px,
-      theme(colors.amber.500 / 5%) 3px
+      rgba(245, 158, 11, 0.05) 3px
     );
   }
 }
@@ -26,23 +26,6 @@ body {
   background: rgb(var(--background));
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-  }
-}
-
 @layer utilities {
   .retro-screen {
     background: repeating-linear-gradient(
@@ -53,20 +36,20 @@ body {
       transparent 2px
     );
     box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
-    border: 2px solid hsl(var(--foreground));
+    border: 2px solid rgb(var(--foreground));
     border-radius: 10px;
     padding: 20px;
     overflow: hidden;
   }
 
   .retro-text {
-    text-shadow: 0 0 5px var(--foreground);
+    text-shadow: 0 0 5px rgb(var(--foreground));
   }
 
   .retro-button {
-    background-color: var(--foreground);
-    color: var(--background);
-    border: 2px solid var(--accent);
+    background-color: rgb(var(--foreground));
+    color: rgb(var(--background));
+    border: 2px solid rgb(var(--accent));
     padding: 10px 20px;
     font-size: 1.2rem;
     cursor: pointer;
@@ -74,8 +57,8 @@ body {
   }
 
   .retro-button:hover {
-    background-color: var(--accent);
-    color: var(--foreground);
+    background-color: rgb(var(--accent));
+    color: rgb(var(--foreground));
   }
 
   .animate-fadeIn {

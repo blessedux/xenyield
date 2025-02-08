@@ -8,10 +8,6 @@ const nextConfig = {
       net: false,
       tls: false,
     };
-    config.optimization = {
-      ...config.optimization,
-      moduleIds: 'deterministic',
-    };
     return config;
   },
   experimental: {
