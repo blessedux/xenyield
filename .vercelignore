@@ -1,4 +1,8 @@
 README.md
 .env.local
 .git
-node_modules 
+node_modules
+contracts/
+scripts/
+test/
+hardhat.config.ts 
