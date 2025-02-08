@@ -17,16 +17,13 @@
 /* Additional styles */
 
 :root {
-  --background: 0 0% 0%;
   --foreground: 0 0% 100%;
-  --border: 0 0% 20%;
-  --accent: 39 100% 50%;
+  --background: 0 0% 0%;
 }
 
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
-  font-family: "VT323", monospace;
 }
 
 @layer base {

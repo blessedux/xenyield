@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: false,
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -15,16 +16,7 @@ const nextConfig = {
     return config;
   },
   experimental: {
-    optimizeCss: true,
     typedRoutes: false,
-    workerThreads: true,
-    cpus: 4,
-    serverActions: {
-      bodySizeLimit: '10mb',
-    },
-    webpackBuildWorker: true,
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
