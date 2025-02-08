@@ -7,7 +7,11 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+<<<<<<< HEAD
 import { Button } from "XENYIELD/xenyield-mvp/components/button"
+=======
+import { Button } from "@/components/ui/button"
+>>>>>>> 5bc7cfdc607cf583355e3324613fed27f8263e43
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>

@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { ethers } from 'ethers'
+import { XENOYIELD_CONTRACT_ADDRESS } from "../config/contracts"
+import { XENOYIELD_ABI } from "../config/contractABI"
 
 interface GameState {
   isConnected: boolean
@@ -15,6 +17,9 @@ interface GameContextType {
   gameState: GameState
   connectWallet: () => Promise<void>
   disconnectWallet: () => void
+  contract: ethers.Contract | null
+  currentSession: any | null
+  fetchSessionInfo: (sessionId: number) => Promise<void>
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
@@ -27,11 +32,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     provider: null,
     signer: null
   })
+  const [contract, setContract] = useState<ethers.Contract | null>(null)
+  const [currentSession, setCurrentSession] = useState(null)
 
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        throw new Error("Please install MetaMask to use this app")
+        throw new Error("Please install MetaMask")
       }
 
       // Request account access
@@ -56,6 +63,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       window.ethereum.on('accountsChanged', handleAccountsChanged)
       window.ethereum.on('chainChanged', handleChainChanged)
 
+      const xenoYieldContract = new ethers.Contract(XENOYIELD_CONTRACT_ADDRESS, XENOYIELD_ABI, signer)
+      setContract(xenoYieldContract)
+
     } catch (error) {
       console.error('Failed to connect wallet:', error)
       throw error
@@ -63,6 +73,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }
 
   const disconnectWallet = () => {
+    // Remove event listeners
+    if (window.ethereum) {
+      window.ethereum.removeListener('accountsChanged', handleAccountsChanged)
+      window.ethereum.removeListener('chainChanged', handleChainChanged)
+    }
+
     setGameState({
       isConnected: false,
       wallet: null,
@@ -70,6 +86,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       provider: null,
       signer: null
     })
+
+    setContract(null)
+    setCurrentSession(null)
   }
 
   const handleAccountsChanged = (accounts: string[]) => {
@@ -87,8 +106,27 @@ export function GameProvider({ children }: { children: ReactNode }) {
     window.location.reload()
   }
 
+  const fetchSessionInfo = async (sessionId: number) => {
+    if (!contract) return
+    try {
+      const sessionInfo = await contract.getSessionInfo(sessionId)
+      setCurrentSession(sessionInfo)
+    } catch (error) {
+      console.error("Failed to fetch session info:", error)
+    }
+  }
+
   return (
-    <GameContext.Provider value={{ gameState, connectWallet, disconnectWallet }}>
+    <GameContext.Provider
+      value={{
+        gameState,
+        connectWallet,
+        disconnectWallet,
+        contract,
+        currentSession,
+        fetchSessionInfo,
+      }}
+    >
       {children}
     </GameContext.Provider>
   )
@@ -107,4 +145,5 @@ declare global {
   interface Window {
     ethereum?: any
   }
-} 
+}
+

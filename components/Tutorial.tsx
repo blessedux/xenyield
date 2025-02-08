@@ -9,7 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+<<<<<<< HEAD
 import { Button } from "XENYIELD/xenyield-mvp/components/button"
+=======
+import { Button } from "@/components/ui/button"
+>>>>>>> 5bc7cfdc607cf583355e3324613fed27f8263e43
 
 const tutorialSteps = [
   {

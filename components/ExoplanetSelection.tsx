@@ -2,7 +2,11 @@
 
 import { useState } from "react"
 import { useGame } from "../context/GameContext"
+<<<<<<< HEAD
 import { Button } from "XENYIELD/xenyield-mvp/components/button"
+=======
+import { Button } from "@/components/ui/button"
+>>>>>>> 5bc7cfdc607cf583355e3324613fed27f8263e43
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface Exoplanet {
