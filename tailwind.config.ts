@@ -11,6 +11,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        border: "hsl(var(--border))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        accent: "hsl(var(--accent))",
         amber: {
           500: '#f59e0b',
         },
