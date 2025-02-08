@@ -10,7 +10,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-amber-500 font-mono text-xl">
-              XenoYield
+              XY
             </Link>
           </div>
 

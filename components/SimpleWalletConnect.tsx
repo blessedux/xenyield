@@ -1,49 +1,14 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
-
-// Message to sign for authentication
-const SIGN_MESSAGE = "Welcome to XenoYield! Please sign this message to verify your wallet ownership."
+import { useState } from 'react'
+import { useGame } from '@/context/GameContext'
 
 export default function SimpleWalletConnect() {
-  const [account, setAccount] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const { gameState, connectWallet, disconnectWallet } = useGame()
   const [isConnecting, setIsConnecting] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const checkConnection = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' })
-        if (accounts.length > 0) {
-          setAccount(accounts[0])
-        }
-      }
-    } catch (err) {
-      console.error("Error checking connection:", err)
-    }
-  }
-
-  const signMessage = async (address: string) => {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const signature = await signer.signMessage(SIGN_MESSAGE)
-      
-      // Here you would typically verify the signature on your backend
-      console.log("Signature:", signature)
-      setIsAuthenticated(true)
-      
-      return true
-    } catch (err) {
-      console.error("Error signing message:", err)
-      setError("Failed to sign authentication message")
-      return false
-    }
-  }
-
-  const connectWallet = async () => {
+  const handleConnect = async () => {
     try {
       setError(null)
       setIsConnecting(true)
@@ -52,83 +17,57 @@ export default function SimpleWalletConnect() {
         throw new Error("Please install MetaMask to connect")
       }
 
-      // Request accounts
+      // Request account access
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts'
       })
 
-      // Get the first account
-      const account = accounts[0]
-      setAccount(account)
-
       // Request signature for authentication
-      const signed = await signMessage(account)
-      if (!signed) {
-        throw new Error("Failed to authenticate wallet")
+      try {
+        const message = "Welcome to XenoYield! Please sign this message to verify your wallet ownership."
+        const from = accounts[0]
+        const signature = await window.ethereum.request({
+          method: 'personal_sign',
+          params: [message, from]
+        })
+        console.log("Signature:", signature)
+      } catch (signError) {
+        throw new Error("Failed to sign authentication message")
       }
 
-      console.log("Wallet connected and authenticated successfully")
+      // Connect wallet through context
+      await connectWallet()
+      
+      // Navigate to game page if on home page
+      if (window.location.pathname === '/') {
+        window.location.href = '/game'
+      }
 
     } catch (err) {
       console.error("Connection error:", err)
       setError(err instanceof Error ? err.message : "Failed to connect")
-      setAccount(null)
-      setIsAuthenticated(false)
     } finally {
       setIsConnecting(false)
     }
   }
 
-  const disconnectWallet = () => {
-    setAccount(null)
-    setIsAuthenticated(false)
-  }
-
-  // Initialize connection check
-  useEffect(() => {
-    checkConnection()
-  }, [])
-
-  // Listen for account changes
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0])
-          setIsAuthenticated(false) // Require re-authentication on account change
-        } else {
-          setAccount(null)
-          setIsAuthenticated(false)
-        }
-      })
-    }
-
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', () => {})
-      }
-    }
-  }, [])
-
-  const handleGameStart = () => {
-    if (!isAuthenticated) {
-      connectWallet()
-    } else {
-      // Navigate to game page
-      window.location.href = '/game'
+  const handleDisconnect = () => {
+    disconnectWallet()
+    if (window.location.pathname === '/game') {
+      window.location.href = '/'
     }
   }
 
   return (
     <div className="w-full max-w-xs">
       <button
-        onClick={handleGameStart}
+        onClick={gameState.isConnected ? handleDisconnect : handleConnect}
         disabled={isConnecting}
         className="w-full px-6 py-3 bg-amber-500 text-black rounded-lg hover:bg-amber-600 
                    transition-colors disabled:opacity-50 font-mono text-lg"
       >
         {isConnecting ? 'Connecting...' : 
-         isAuthenticated ? 'Enter Game' : 'Connect Wallet'}
+         gameState.isConnected ? 'Disconnect Wallet' : 'Connect Wallet'}
       </button>
 
       {error && (
@@ -137,18 +76,10 @@ export default function SimpleWalletConnect() {
         </div>
       )}
 
-      {account && (
-        <div className="mt-2 text-xs text-center">
-          <div className="text-amber-500">
-            {isAuthenticated ? (
-              <>
-                <span className="text-green-500">✓</span>{' '}
-                {account.slice(0, 6)}...{account.slice(-4)}
-              </>
-            ) : (
-              <span className="text-yellow-500">Waiting for signature...</span>
-            )}
-          </div>
+      {gameState.wallet && (
+        <div className="mt-2 text-xs text-center text-amber-500">
+          <span className="text-green-500">✓</span>{' '}
+          {gameState.wallet.slice(0, 6)}...{gameState.wallet.slice(-4)}
         </div>
       )}
     </div>

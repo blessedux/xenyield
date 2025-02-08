@@ -1,25 +1,17 @@
 "use client"
 
 import React, { createContext, useContext, useState, ReactNode } from 'react'
-import { ethers } from 'ethers'
-import { XENOYIELD_CONTRACT_ADDRESS } from "../config/contracts"
-import { XENOYIELD_ABI } from "../config/contractABI"
 
 interface GameState {
   isConnected: boolean
   wallet: string | null
   chainId: string | null
-  provider: ethers.providers.Web3Provider | null
-  signer: ethers.Signer | null
 }
 
 interface GameContextType {
   gameState: GameState
   connectWallet: () => Promise<void>
   disconnectWallet: () => void
-  contract: ethers.Contract | null
-  currentSession: any | null
-  fetchSessionInfo: (sessionId: number) => Promise<void>
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
@@ -28,12 +20,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [gameState, setGameState] = useState<GameState>({
     isConnected: false,
     wallet: null,
-    chainId: null,
-    provider: null,
-    signer: null
+    chainId: null
   })
-  const [contract, setContract] = useState<ethers.Contract | null>(null)
-  const [currentSession, setCurrentSession] = useState(null)
 
   const connectWallet = async () => {
     try {
@@ -46,25 +34,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
         method: 'eth_requestAccounts' 
       })
 
-      // Get provider and signer
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const network = await provider.getNetwork()
+      // Get chain ID
+      const chainId = await window.ethereum.request({ 
+        method: 'eth_chainId' 
+      })
 
       setGameState({
         isConnected: true,
         wallet: accounts[0],
-        chainId: network.chainId.toString(),
-        provider,
-        signer
+        chainId: chainId
       })
 
       // Setup event listeners
       window.ethereum.on('accountsChanged', handleAccountsChanged)
       window.ethereum.on('chainChanged', handleChainChanged)
-
-      const xenoYieldContract = new ethers.Contract(XENOYIELD_CONTRACT_ADDRESS, XENOYIELD_ABI, signer)
-      setContract(xenoYieldContract)
 
     } catch (error) {
       console.error('Failed to connect wallet:', error)
@@ -82,13 +65,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setGameState({
       isConnected: false,
       wallet: null,
-      chainId: null,
-      provider: null,
-      signer: null
+      chainId: null
     })
-
-    setContract(null)
-    setCurrentSession(null)
   }
 
   const handleAccountsChanged = (accounts: string[]) => {
@@ -106,25 +84,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     window.location.reload()
   }
 
-  const fetchSessionInfo = async (sessionId: number) => {
-    if (!contract) return
-    try {
-      const sessionInfo = await contract.getSessionInfo(sessionId)
-      setCurrentSession(sessionInfo)
-    } catch (error) {
-      console.error("Failed to fetch session info:", error)
-    }
-  }
-
   return (
     <GameContext.Provider
       value={{
         gameState,
         connectWallet,
-        disconnectWallet,
-        contract,
-        currentSession,
-        fetchSessionInfo,
+        disconnectWallet
       }}
     >
       {children}

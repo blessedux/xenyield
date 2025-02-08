@@ -57,7 +57,7 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
         {/* Message history */}
         {messages.map((msg, i) => (
           <div key={i} className={`mb-2 ${msg.role === 'assistant' ? 'text-green-500' : 'text-amber-500'}`}>
-            <span className="mr-2">{msg.role === 'assistant' ? 'AI>' : '$'}</span>
+            <span className="mr-2">{msg.role === 'assistant' ? '>' : '$'}</span>
             <span style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</span>
           </div>
         ))}
@@ -70,7 +70,7 @@ export default function RetroTerminal({ onSend, messages }: RetroTerminalProps) 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 bg-transparent border-none outline-none text-amber-500 font-mono"
-            placeholder="Type your message..."
+            placeholder="Type your command..."
           />
         </form>
       </div>
