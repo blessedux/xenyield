@@ -6,13 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        amber: {
-          500: '#f59e0b',
-        },
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };

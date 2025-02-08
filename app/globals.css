@@ -22,8 +22,8 @@
 }
 
 body {
-  color: hsl(var(--foreground));
-  background: hsl(var(--background));
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
 }
 
 @layer base {
