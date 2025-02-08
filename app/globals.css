@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Additional styles can be added here, but keep it simple for now */
+
 @layer components {
   .bg-scanlines {
     background-image: repeating-linear-gradient(
