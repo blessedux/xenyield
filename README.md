@@ -7,9 +7,9 @@ The Next Frontier: 2024-2050
 As humanity stands on the brink of becoming a multi-planetary species, the next three decades promise unprecedented achievements in space exploration:
 
 2024-2030:
-*Permanent lunar settlements through NASA's Artemis program
-*First commercial space stations
-*Initial Mars cargo missions laying groundwork for human arrival
+<br>*Permanent lunar settlements through NASA's Artemis program
+<br>*First commercial space stations
+<br>*Initial Mars cargo missions laying groundwork for human arrival
 
 2030-2040:
 First human settlement on Mars
