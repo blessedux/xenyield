@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #ffa500;
+  --accent: #ff4500;
+  --muted: #8b4000;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "VT323", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-foreground/20;
+  }
+}
+
+@layer utilities {
+  .retro-screen {
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+    border: 2px solid var(--foreground);
+    border-radius: 10px;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .retro-text {
+    text-shadow: 0 0 5px var(--foreground);
+  }
+
+  .retro-button {
+    background-color: var(--foreground);
+    color: var(--background);
+    border: 2px solid var(--accent);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .retro-button:hover {
+    background-color: var(--accent);
+    color: var(--foreground);
+  }
+}
+
